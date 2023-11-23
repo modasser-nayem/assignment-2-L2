@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IUser } from './user.interface';
+import { IUser, IUserModel } from './user.interface';
 
 const userSchema = new Schema<IUser>({
   userId: {
@@ -38,13 +38,27 @@ const userSchema = new Schema<IUser>({
     city: String,
     country: String,
   },
-  orders: [
-    {
-      productName: String,
-      price: Number,
-      quantity: Number,
-    },
-  ],
+  orders: {
+    type: [
+      {
+        productName: String,
+        price: Number,
+        quantity: Number,
+      },
+    ],
+    required: true,
+  },
 });
 
-export const User = model('User', userSchema);
+// Create a custom Static method
+userSchema.statics.isUserExistById = async function (userId: number) {
+  const existUser = await User.findOne({ userId: userId });
+  return existUser;
+};
+
+userSchema.statics.isUserExistByUsername = async function (username: string) {
+  const existUser = await User.findOne({ username: username });
+  return existUser;
+};
+
+export const User = model<IUser, IUserModel>('User', userSchema);
