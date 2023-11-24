@@ -50,6 +50,7 @@ const userSchema = new Schema<IUser>({
     ],
   },
 });
+
 // Pre middleware
 userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(
@@ -58,12 +59,6 @@ userSchema.pre('save', async function (next) {
   );
   next();
 });
-
-// Post middleware
-// userSchema.post('save', function (doc, next) {
-
-//   next();
-// });
 
 // Create a custom Static method
 userSchema.statics.isUserExistByUserId = async function (userId: number) {
