@@ -1,5 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { Document, Query, Schema, model } from 'mongoose';
 import { IUser, IUserModel } from './user.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 const userSchema = new Schema<IUser>({
   userId: {
@@ -46,8 +48,26 @@ const userSchema = new Schema<IUser>({
         quantity: Number,
       },
     ],
-    required: true,
   },
+});
+// Pre middleware
+userSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.BCRYPT_SALT_ROUNDS),
+  );
+  next();
+});
+
+userSchema.pre('find', function (this: Query<IUser, Document>, next) {
+  this.find();
+  next();
+});
+
+// Post middleware
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
 });
 
 // Create a custom Static method

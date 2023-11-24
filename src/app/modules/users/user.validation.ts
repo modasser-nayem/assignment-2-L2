@@ -19,13 +19,13 @@ export const userValidation = z.object({
     city: z.string(),
     country: z.string(),
   }),
-  orders: z
-    .array(
+  orders: z.optional(
+    z.array(
       z.object({
         productName: z.string(),
         price: z.number(),
         quantity: z.number(),
       }),
-    )
-    .optional(),
+    ),
+  ),
 });

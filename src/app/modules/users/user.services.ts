@@ -8,20 +8,14 @@ const createNewUser = async (userData: IUser) => {
   if (await User.isUserExistByUsername(userData.username)) {
     throw new Error('Username already exists!');
   }
-  const result = User.create(userData);
+  const result = await User.create(userData);
   return result;
 };
 
 // testing
-const getAllUsers = () => {
-  const users = [
-    { _id: 1, name: 'Nayem', age: 21 },
-    { _id: 1, name: 'Sayem', age: 23 },
-    { _id: 1, name: 'Rakib', age: 21 },
-    { _id: 1, name: 'Raju', age: 14 },
-    { _id: 1, name: 'Bablu', age: 27 },
-  ];
-  return users;
+const getAllUsers = async () => {
+  const result = await User.find();
+  return result;
 };
 
 export const userServices = { getAllUsers, createNewUser };
