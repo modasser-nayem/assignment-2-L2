@@ -51,15 +51,26 @@ const getSingleUser = async (userId: number) => {
 };
 
 const updateUser = async (userId: number, userData: IUser) => {
-  if (!(await User.isUserExistByUserId(userId))) {
+  const existsUser = await User.isUserExistByUserId(userId);
+  if (!existsUser) {
     throw new Error('User not found!');
   }
+  if (existsUser.userId !== userData.userId) {
+    if (await User.isUserExistByUserId(userData.userId)) {
+      throw new Error('UserId already exists!');
+    }
+  }
+  if (existsUser.username !== userData.username) {
+    if (await User.isUserExistByUsername(userData.username)) {
+      throw new Error('Username already exists!');
+    }
+  }
+
   const result = await User.findOneAndUpdate(
     { userId: userId },
     { $set: userData },
     { new: true, projection: { password: 0, orders: 0 } },
   );
-  console.log('services result', result);
   return result;
 };
 

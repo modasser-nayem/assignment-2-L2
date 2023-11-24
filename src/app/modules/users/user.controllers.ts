@@ -109,10 +109,10 @@ const updateUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: 'User not found!',
+      message: 'User updated failed!',
       error: {
         code: 404,
-        description: 'User not found!',
+        description: error.message,
       },
     });
   }

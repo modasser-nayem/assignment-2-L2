@@ -15,7 +15,7 @@ async function main() {
   } catch (error) {
     // eslint-disable-next-line
     console.log(error);
-    throw new Error('Something Went Wrong!');
+    throw new Error('Internal Server Error!');
   }
 }
 
