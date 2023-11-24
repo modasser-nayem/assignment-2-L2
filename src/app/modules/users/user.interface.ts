@@ -27,6 +27,6 @@ export interface IUser {
 
 // mongoose custom static method interface
 export interface IUserModel extends Model<IUser> {
-  isUserExist(filed: string, value: any): Promise<IUser | null>;
-  isUserExistById(id: string): Promise<IUser | null>;
+  isUserExistByUserId(userId: number): Promise<IUser | null>;
+  isUserExistByUsername(username: string): Promise<IUser | null>;
 }

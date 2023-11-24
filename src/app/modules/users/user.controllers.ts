@@ -13,7 +13,8 @@ const createNewUser = async (req: Request, res: Response) => {
       message: 'User created successfully!',
       data: result,
     });
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong!',
@@ -48,7 +49,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 const getSingleUser = async (req: Request, res: Response) => {
   try {
-    const result = await userServices.getSingleUser(req.params.id);
+    const result = await userServices.getSingleUser(Number(req.params.userId));
     res.status(200).json({
       success: true,
       message: 'User fetched successfully!',
@@ -66,4 +67,30 @@ const getSingleUser = async (req: Request, res: Response) => {
     });
   }
 };
-export const userControllers = { getAllUsers, createNewUser, getSingleUser };
+
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const result = await userServices.deleteUser(Number(req.params.userId));
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    });
+    // eslint-disable-next-line
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: {
+        code: 500,
+        description: error.message,
+      },
+    });
+  }
+};
+export const userControllers = {
+  getAllUsers,
+  createNewUser,
+  getSingleUser,
+  deleteUser,
+};
