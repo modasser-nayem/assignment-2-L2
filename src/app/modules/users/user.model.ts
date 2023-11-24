@@ -1,4 +1,4 @@
-import { Document, Query, Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { IUser, IUserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
@@ -59,16 +59,11 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.pre('find', function (this: Query<IUser, Document>, next) {
-  this.find();
-  next();
-});
-
 // Post middleware
-userSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
-});
+// userSchema.post('save', function (doc, next) {
+
+//   next();
+// });
 
 // Create a custom Static method
 userSchema.statics.isUserExistByUserId = async function (userId: number) {

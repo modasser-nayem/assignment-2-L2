@@ -8,7 +8,11 @@ const createNewUser = async (userData: IUser) => {
   if (await User.isUserExistByUsername(userData.username)) {
     throw new Error('Username already exists!');
   }
-  const result = await User.create(userData);
+  const createdUser = await User.create(userData);
+  const result = await User.findOne(
+    { userId: createdUser.userId },
+    { password: 0, orders: 0 },
+  );
   return result;
 };
 
@@ -46,6 +50,19 @@ const getSingleUser = async (userId: number) => {
   return result;
 };
 
+const updateUser = async (userId: number, userData: IUser) => {
+  if (!(await User.isUserExistByUserId(userId))) {
+    throw new Error('User not found!');
+  }
+  const result = await User.findOneAndUpdate(
+    { userId: userId },
+    { $set: userData },
+    { new: true, projection: { password: 0, orders: 0 } },
+  );
+  console.log('services result', result);
+  return result;
+};
+
 const deleteUser = async (userId: number) => {
   if (!(await User.isUserExistByUserId(userId))) {
     throw new Error('User not found!');
@@ -58,5 +75,6 @@ export const userServices = {
   getAllUsers,
   createNewUser,
   getSingleUser,
+  updateUser,
   deleteUser,
 };
