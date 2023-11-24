@@ -71,13 +71,13 @@ userSchema.post('save', function (doc, next) {
 });
 
 // Create a custom Static method
-userSchema.statics.isUserExistById = async function (userId: number) {
-  const existUser = await User.findOne({ userId: userId });
+userSchema.statics.isUserExist = async function (filed: string, value: any) {
+  const existUser = await User.findOne({ filed: value });
   return existUser;
 };
 
-userSchema.statics.isUserExistByUsername = async function (username: string) {
-  const existUser = await User.findOne({ username: username });
+userSchema.statics.isUserExistById = async function (id: string) {
+  const existUser = await User.findById(id);
   return existUser;
 };
 
