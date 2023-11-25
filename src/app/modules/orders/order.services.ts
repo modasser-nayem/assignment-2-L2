@@ -19,7 +19,15 @@ const getAllOrders = async (userId: number) => {
   if (!(await User.isUserExistByUserId(userId))) {
     throw new Error('User not found!');
   }
-  const result = User.findOne({ userId }, { orders: 1, _id: 0 });
+  const result = User.findOne(
+    { userId },
+    {
+      _id: 0,
+      'orders.productName': 1,
+      'orders.price': 1,
+      'orders.quantity': 1,
+    },
+  );
   return result;
 };
 

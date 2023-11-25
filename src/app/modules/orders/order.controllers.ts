@@ -5,7 +5,8 @@ import { orderSchemaValidator } from '../users/user.validation';
 const createNewOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const zodParseOrderData = orderSchemaValidator.safeParse(req.body);
+    const orderData = req.body;
+    const zodParseOrderData = orderSchemaValidator.safeParse(orderData);
     if (zodParseOrderData.success) {
       await orderServices.createNewOrder(
         Number(userId),
