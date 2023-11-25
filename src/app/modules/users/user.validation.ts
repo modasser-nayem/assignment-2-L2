@@ -63,21 +63,25 @@ export const userValidation = z.object({
          .string()
          .min(3, { message: 'Hobbies must be greater then 2 character' })
          .trim(),
+      { required_error: 'Please provide your hobbies' },
    ),
-   address: z.object({
-      street: z
-         .string({ required_error: 'Please provide a street' })
-         .min(3, { message: 'Street must be greater then 2 character' })
-         .trim(),
-      city: z
-         .string({ required_error: 'Please provide a city' })
-         .min(3, { message: 'City must be greater then 2 character' })
-         .trim(),
-      country: z
-         .string({ required_error: 'Please provide a country' })
-         .min(3, { message: 'Country must be greater then 2 character' })
-         .trim(),
-   }),
+   address: z.object(
+      {
+         street: z
+            .string({ required_error: 'Please provide a street' })
+            .min(3, { message: 'Street must be greater then 2 character' })
+            .trim(),
+         city: z
+            .string({ required_error: 'Please provide a city' })
+            .min(3, { message: 'City must be greater then 2 character' })
+            .trim(),
+         country: z
+            .string({ required_error: 'Please provide a country' })
+            .min(3, { message: 'Country must be greater then 2 character' })
+            .trim(),
+      },
+      { required_error: 'Please provide your address' },
+   ),
    orders: z.optional(z.array(orderSchemaValidator)),
 });
 
